@@ -1,4 +1,4 @@
-package tech.c3n7.estore.ProductsService.rest;
+package tech.c3n7.estore.ProductsService.command.rest;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +10,13 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
-public class ProductsController {
+public class ProductsCommandController {
 
     private final Environment environment;
     private final CommandGateway commandGateway;
 
     @Autowired
-    private ProductsController(Environment environment, CommandGateway commandGateway) {
+    private ProductsCommandController(Environment environment, CommandGateway commandGateway) {
         this.environment = environment;
         this.commandGateway = commandGateway;
     }

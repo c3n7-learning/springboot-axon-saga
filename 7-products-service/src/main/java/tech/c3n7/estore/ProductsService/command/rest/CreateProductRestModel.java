@@ -1,4 +1,4 @@
-package tech.c3n7.estore.ProductsService.rest;
+package tech.c3n7.estore.ProductsService.command.rest;
 
 import lombok.Data;
 
