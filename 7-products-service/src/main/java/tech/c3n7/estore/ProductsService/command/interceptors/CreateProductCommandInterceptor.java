@@ -2,6 +2,7 @@ package tech.c3n7.estore.ProductsService.command.interceptors;
 
 import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.messaging.MessageDispatchInterceptor;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import tech.c3n7.estore.ProductsService.command.CreateProductCommand;
@@ -10,11 +11,10 @@ import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.logging.Logger;
 
 @Component
 public class CreateProductCommandInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
-    private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(CreateProductCommandInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CreateProductCommandInterceptor.class);
 
     @Nonnull
     @Override
