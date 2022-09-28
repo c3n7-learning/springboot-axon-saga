@@ -12,7 +12,7 @@ public class CreateProductRestModel {
 
     // https://hibernate.org/validator/
     // http://hibernate.org/validator/documentation/
-//    @NotBlank(message="Product title is a required field")
+    @NotBlank(message="Product title is a required field")
     private String title;
 
     @Min(value=1, message="The minimum price is 1")
