@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.Date;
+
 @ControllerAdvice
 public class ProductServiceErrorHandler {
 
@@ -14,8 +16,10 @@ public class ProductServiceErrorHandler {
     public ResponseEntity<Object> handleIllegalStateException(
             IllegalStateException ex, WebRequest request) {
 
+        ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage());
+
         return new ResponseEntity<>(
-                ex.getMessage(),
+                errorMessage,
                 new HttpHeaders(),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
@@ -26,8 +30,10 @@ public class ProductServiceErrorHandler {
     public ResponseEntity<Object> handleOtherExceptions(
             Exception ex, WebRequest request) {
 
+        ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage());
+
         return new ResponseEntity<>(
-                ex.getMessage(),
+                errorMessage,
                 new HttpHeaders(),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
