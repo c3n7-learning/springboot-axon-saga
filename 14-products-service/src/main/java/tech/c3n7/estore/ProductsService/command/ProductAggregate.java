@@ -23,7 +23,7 @@ public class ProductAggregate {
     }
 
     @CommandHandler
-    public ProductAggregate(CreateProductCommand createProductCommand) throws Exception {
+    public ProductAggregate(CreateProductCommand createProductCommand) {
         // Validate Create Product Command
         if (createProductCommand.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Price cannot be less or equal than zero");
@@ -38,8 +38,6 @@ public class ProductAggregate {
         BeanUtils.copyProperties(createProductCommand, productCreatedEvent);
 
         AggregateLifecycle.apply(productCreatedEvent);
-
-        if(true) throw new Exception("An error took place in the CreateProductCommand @CommandHandler");
     }
 
     @EventSourcingHandler

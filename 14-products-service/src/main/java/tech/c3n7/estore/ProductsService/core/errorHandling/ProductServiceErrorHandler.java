@@ -40,8 +40,6 @@ public class ProductServiceErrorHandler {
         );
     }
 
-
-
     @ExceptionHandler(value = {CommandExecutionException.class})
     public ResponseEntity<Object> handleCommandExecutionException(
             CommandExecutionException ex, WebRequest request) {
