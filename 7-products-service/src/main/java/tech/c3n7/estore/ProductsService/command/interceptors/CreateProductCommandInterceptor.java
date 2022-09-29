@@ -6,15 +6,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import tech.c3n7.estore.ProductsService.command.CreateProductCommand;
+import tech.c3n7.estore.ProductsService.core.data.ProductLookupEntity;
+import tech.c3n7.estore.ProductsService.core.data.ProductLookupRepositry;
 
 import javax.annotation.Nonnull;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.BiFunction;
 
 @Component
 public class CreateProductCommandInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateProductCommandInterceptor.class);
+
+    private final ProductLookupRepositry productLookupRepositry;
+
+    public CreateProductCommandInterceptor(ProductLookupRepositry productLookupRepositry) {
+        this.productLookupRepositry = productLookupRepositry;
+    }
 
     @Nonnull
     @Override
@@ -28,13 +35,11 @@ public class CreateProductCommandInterceptor implements MessageDispatchIntercept
             if(CreateProductCommand.class.equals(command.getPayloadType())) {
                 CreateProductCommand createProductCommand = (CreateProductCommand) command.getPayload();
                 // Validate Create Product Command
-                if (createProductCommand.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-                    throw new IllegalArgumentException("Price cannot be less or equal than zero");
-                }
+                ProductLookupEntity productLookupEntity = productLookupRepositry.findByProductIdOrTitle(createProductCommand.getProductId(), createProductCommand.getTitle());
 
-                if (createProductCommand.getTitle() == null
-                        || createProductCommand.getTitle().isBlank()) {
-                    throw new IllegalArgumentException("Price cannot be less or equal than zero");
+                if(productLookupEntity  != null) {
+                    throw new IllegalStateException(String.format("Product with productId %s or title %s already exists",
+                        createProductCommand.getProductId(), createProductCommand.getTitle()));
                 }
             }
           return command;
