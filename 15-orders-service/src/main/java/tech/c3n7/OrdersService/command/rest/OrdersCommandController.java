@@ -2,13 +2,12 @@ package tech.c3n7.OrdersService.command.rest;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tech.c3n7.OrdersService.command.CreateOrderCommand;
-import tech.c3n7.OrdersService.command.OrderStatus;
+import tech.c3n7.OrdersService.command.commands.CreateOrderCommand;
+import tech.c3n7.OrdersService.core.model.OrderStatus;
 
 import javax.validation.Valid;
 import java.util.UUID;
