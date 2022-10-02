@@ -33,7 +33,7 @@ public class ProductAggregate {
 
         if (createProductCommand.getTitle() == null
                 || createProductCommand.getTitle().isBlank()) {
-            throw new IllegalArgumentException("Price cannot be less or equal than zero");
+            throw new IllegalArgumentException("The title can not be blank");
         }
 
         ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent();
