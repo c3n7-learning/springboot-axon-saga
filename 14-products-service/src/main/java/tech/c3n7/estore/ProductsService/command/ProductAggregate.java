@@ -7,8 +7,8 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
 import tech.c3n7.estore.ProductsService.core.events.ProductCreatedEvent;
-import tech.c3n7.estore.ProductsService.events.ProductReservedEvent;
 import tech.c3n7.estore.core.commands.ReserveProductCommand;
+import tech.c3n7.estore.core.commands.events.ProductReservedEvent;
 
 import java.math.BigDecimal;
 

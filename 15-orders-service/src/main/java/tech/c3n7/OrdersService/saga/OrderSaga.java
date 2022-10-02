@@ -7,14 +7,18 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import tech.c3n7.OrdersService.core.events.OrderCreatedEvent;
 import tech.c3n7.estore.core.commands.ReserveProductCommand;
+import tech.c3n7.estore.core.commands.events.ProductReservedEvent;
 
 import javax.annotation.Nonnull;
 
 @Saga
 public class OrderSaga {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderSaga.class);
     @Autowired
     private transient CommandGateway commandGateway;
 
@@ -28,6 +32,9 @@ public class OrderSaga {
                 .userId(orderCreatedEvent.getUserId())
                 .build();
 
+        LOGGER.info("OrderCreatedEvent handled for orderId: " + reserveProductCommand.getOrderId() +
+                " and productId: " + reserveProductCommand.getProductId());
+
         commandGateway.send(reserveProductCommand, new CommandCallback<ReserveProductCommand, Object>() {
             @Override
             public void onResult(@Nonnull CommandMessage<? extends ReserveProductCommand> commandMessage, @Nonnull CommandResultMessage<?> commandResultMessage) {
@@ -36,5 +43,11 @@ public class OrderSaga {
                 }
             }
         });
+    }
+
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(ProductReservedEvent productReservedEvent) {
+        LOGGER.info("ProductReservedEvent handled for productId: " + productReservedEvent.getProductId() +
+                " and orderId: " + productReservedEvent.getOrderId());
     }
 }
