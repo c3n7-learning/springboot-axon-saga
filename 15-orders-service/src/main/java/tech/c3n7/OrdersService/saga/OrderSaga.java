@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tech.c3n7.OrdersService.core.events.OrderCreatedEvent;
 import tech.c3n7.estore.core.commands.ProcessPaymentCommand;
 import tech.c3n7.estore.core.commands.ReserveProductCommand;
+import tech.c3n7.estore.core.commands.events.PaymentProcessedEvent;
 import tech.c3n7.estore.core.commands.events.ProductReservedEvent;
 import tech.c3n7.estore.core.model.User;
 import tech.c3n7.estore.core.query.FetchUserPaymentDetailsQuery;
@@ -96,5 +97,10 @@ public class OrderSaga {
             LOGGER.info("The ProcessPaymentCommand resulted in NULL. Initiating a compensating transaction");
             // Start compensating transaction
         }
+    }
+
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(PaymentProcessedEvent paymentProcessedEvent) {
+        // Send an ApprovedOrder Command
     }
 }

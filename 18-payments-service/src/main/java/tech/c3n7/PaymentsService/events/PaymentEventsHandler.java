@@ -22,7 +22,7 @@ public class PaymentEventsHandler {
 
     @EventHandler
     public void on(PaymentProcessedEvent paymentProcessedEvent) {
-        LOGGER.info("PaymentProcessedEvent is called for orderId: " + event.getOrderId());
+        LOGGER.info("PaymentProcessedEvent is called for orderId: " + paymentProcessedEvent.getOrderId());
 
         PaymentEntity paymentEntity = new PaymentEntity();
         BeanUtils.copyProperties(paymentProcessedEvent, paymentEntity);
