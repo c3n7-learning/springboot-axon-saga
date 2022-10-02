@@ -16,25 +16,25 @@ import tech.c3n7.estore.ProductsService.core.errorHandling.ProductsServiceEvents
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@Import({ AxonConfig.class })
+@Import({AxonConfig.class})
 public class ProductsServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ProductsServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ProductsServiceApplication.class, args);
+    }
 
-	@Autowired
-	public void registerCreateProductCommandInterceptor(ApplicationContext context, CommandBus commandBus) {
-		commandBus.registerDispatchInterceptor(context.getBean(CreateProductCommandInterceptor.class));
+    @Autowired
+    public void registerCreateProductCommandInterceptor(ApplicationContext context, CommandBus commandBus) {
+        commandBus.registerDispatchInterceptor(context.getBean(CreateProductCommandInterceptor.class));
 
-	}
+    }
 
-	@Autowired
-	public void configure(EventProcessingConfigurer config) {
-		config.registerListenerInvocationErrorHandler("product-group",
-				conf -> new ProductsServiceEventsErrorHandler());
-		// This pushes the error further up
+    @Autowired
+    public void configure(EventProcessingConfigurer config) {
+        config.registerListenerInvocationErrorHandler("product-group",
+                conf -> new ProductsServiceEventsErrorHandler());
+        // This pushes the error further up
 //		config.registerListenerInvocationErrorHandler("product-group",
 //				conf -> PropagatingErrorHandler.instance());
-	}
+    }
 }
