@@ -13,12 +13,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import tech.c3n7.OrdersService.core.events.OrderCreatedEvent;
+import tech.c3n7.estore.core.commands.ProcessPaymentCommand;
 import tech.c3n7.estore.core.commands.ReserveProductCommand;
 import tech.c3n7.estore.core.commands.events.ProductReservedEvent;
 import tech.c3n7.estore.core.model.User;
 import tech.c3n7.estore.core.query.FetchUserPaymentDetailsQuery;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Saga
 public class OrderSaga {
@@ -74,5 +77,24 @@ public class OrderSaga {
         }
 
         LOGGER.info("Successfully fetched user payment details for user " + userPaymentDetails.getFirstName());
+        ProcessPaymentCommand processPaymentCommand = ProcessPaymentCommand.builder()
+                .orderId(productReservedEvent.getOrderId())
+                .paymentDetails(userPaymentDetails.getPaymentDetails())
+                .paymentId(UUID.randomUUID().toString())
+                .build();
+
+        String result = null;
+        try {
+            result = commandGateway.sendAndWait(processPaymentCommand, 10, TimeUnit.SECONDS);
+        } catch(Exception ex) {
+            // Start compensating transaction
+            return;
+        }
+
+        if(result == null) {
+            // The command timed out (the 10 seconds ran out)
+            LOGGER.info("The ProcessPaymentCommand resulted in NULL. Initiating a compensating transaction");
+            // Start compensating transaction
+        }
     }
 }
