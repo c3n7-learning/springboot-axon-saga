@@ -1,4 +1,4 @@
-package tech.c3n7.PaymentsService.core.data;
+package tech.c3n7.PaymentsService.data;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

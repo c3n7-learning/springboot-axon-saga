@@ -1,4 +1,4 @@
-package tech.c3n7.PaymentsService.core.data;
+package tech.c3n7.PaymentsService.data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

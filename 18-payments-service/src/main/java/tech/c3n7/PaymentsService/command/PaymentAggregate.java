@@ -1,4 +1,4 @@
-package tech.c3n7.PaymentsService.events;
+package tech.c3n7.PaymentsService.command;
 
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -21,6 +21,14 @@ public class PaymentAggregate {
         if(processPaymentCommand.getOrderId() == null ||
             processPaymentCommand.getOrderId().isBlank()) {
             throw new IllegalArgumentException("The Order ID can not be left blank");
+        }
+
+        if(processPaymentCommand.getPaymentDetails() == null) {
+            throw new IllegalArgumentException("Missing payment details");
+        }
+
+        if(processPaymentCommand.getPaymentId() == null) {
+            throw new IllegalArgumentException("Missing payment Id");
         }
 
         BeanUtils.copyProperties(processPaymentCommand, paymentProcessedEvent);
