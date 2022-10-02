@@ -1,5 +1,6 @@
 package tech.c3n7.UsersService.query;
 
+import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
 import tech.c3n7.estore.core.model.PaymentDetails;
 import tech.c3n7.estore.core.model.User;
@@ -7,6 +8,7 @@ import tech.c3n7.estore.core.query.FetchUserPaymentDetailsQuery;
 
 @Component
 public class UserEventsHandler {
+    @QueryHandler
     public User fetchUser(FetchUserPaymentDetailsQuery fetchUserPaymentDetailsQuery) {
         PaymentDetails paymentDetails = PaymentDetails.builder()
                 .cardNumber("123Card")
