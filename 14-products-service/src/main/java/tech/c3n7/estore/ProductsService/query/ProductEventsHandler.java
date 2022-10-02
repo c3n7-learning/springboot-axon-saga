@@ -46,7 +46,7 @@ public class ProductEventsHandler {
             ex.printStackTrace();
         }
 
-        productsRepository.save(productEntity);
+//        productsRepository.save(productEntity);
 
 //        if(true) throw new Exception("Forcing exception in event handler class");
     }
