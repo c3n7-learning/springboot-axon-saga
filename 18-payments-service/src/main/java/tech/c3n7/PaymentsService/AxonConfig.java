@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Import;
 
 // https://discuss.axoniq.io/t/getting-xstream-dependency-exception/3634/6
 @Configuration
-@Import({ AxonConfig.class })
 public class AxonConfig {
 
     @Bean

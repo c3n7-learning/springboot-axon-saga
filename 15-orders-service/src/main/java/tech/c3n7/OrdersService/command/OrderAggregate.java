@@ -22,6 +22,9 @@ public class OrderAggregate {
     private String addressId;
     private OrderStatus orderStatus;
 
+    public OrderAggregate() {
+    }
+
     @CommandHandler
     public OrderAggregate(CreateOrderCommand createOrderCommand) {
         OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent();
@@ -46,7 +49,7 @@ public class OrderAggregate {
         // Create and publish the OrderApproveEvent
         OrderApprovedEvent orderApprovedEvent = new OrderApprovedEvent(approveOrderCommand.getOrderId());
 
-        AggregateLifecycle.apply(approveOrderCommand);
+        AggregateLifecycle.apply(orderApprovedEvent);
     }
 
     @EventSourcingHandler

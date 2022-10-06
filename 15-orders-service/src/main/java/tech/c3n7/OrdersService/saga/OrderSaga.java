@@ -36,6 +36,7 @@ public class OrderSaga {
     @Autowired
     private transient CommandGateway commandGateway;
 
+
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(OrderCreatedEvent orderCreatedEvent) {
@@ -93,6 +94,7 @@ public class OrderSaga {
             result = commandGateway.sendAndWait(processPaymentCommand, 10, TimeUnit.SECONDS);
         } catch(Exception ex) {
             // Start compensating transaction
+            LOGGER.info("The ProcessPaymentCommand Failed. Initiating a compensating transaction:: " + ex.getMessage());
             return;
         }
 

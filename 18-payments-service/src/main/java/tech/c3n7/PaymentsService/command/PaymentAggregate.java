@@ -2,6 +2,7 @@ package tech.c3n7.PaymentsService.command;
 
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
+import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
@@ -11,8 +12,10 @@ import tech.c3n7.estore.core.commands.events.PaymentProcessedEvent;
 @Aggregate
 public class PaymentAggregate {
 
-    private String orderId;
+    @AggregateIdentifier
     private String paymentId;
+
+    private String orderId;
 
     @CommandHandler
     public PaymentAggregate(ProcessPaymentCommand processPaymentCommand) {
