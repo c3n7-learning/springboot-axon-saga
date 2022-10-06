@@ -5,6 +5,8 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import tech.c3n7.estore.ProductsService.core.events.ProductCreatedEvent;
 import tech.c3n7.estore.core.commands.CancelProductReservationCommand;
@@ -16,6 +18,8 @@ import java.math.BigDecimal;
 
 @Aggregate
 public class ProductAggregate {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductAggregate.class);
 
     @AggregateIdentifier
     private String productId;
@@ -51,6 +55,7 @@ public class ProductAggregate {
         if(quantity < reserveProductCommand.getQuantity()) {
             throw new IllegalArgumentException("Insufficient number of items in stock");
         }
+
 
         ProductReservedEvent productReservedEvent = ProductReservedEvent.builder()
                 .orderId(reserveProductCommand.getOrderId())

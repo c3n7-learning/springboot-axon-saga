@@ -18,6 +18,7 @@ import tech.c3n7.OrdersService.command.commands.ApproveOrderCommand;
 import tech.c3n7.OrdersService.command.commands.RejectOrderCommand;
 import tech.c3n7.OrdersService.core.events.OrderApprovedEvent;
 import tech.c3n7.OrdersService.core.events.OrderCreatedEvent;
+import tech.c3n7.OrdersService.core.events.OrderRejectedEvent;
 import tech.c3n7.estore.core.commands.CancelProductReservationCommand;
 import tech.c3n7.estore.core.commands.ProcessPaymentCommand;
 import tech.c3n7.estore.core.commands.ReserveProductCommand;
@@ -58,6 +59,8 @@ public class OrderSaga {
             public void onResult(@Nonnull CommandMessage<? extends ReserveProductCommand> commandMessage, @Nonnull CommandResultMessage<?> commandResultMessage) {
                 if (commandResultMessage.isExceptional()) {
                     // TODO:: Start compensating transaction
+                    LOGGER.error(commandResultMessage.toString());
+                    LOGGER.warn(commandMessage.toString());
                 }
             }
         });
@@ -120,6 +123,8 @@ public class OrderSaga {
                 .userId(productReservedEvent.getUserId())
                 .reason(reason)
                 .build();
+
+        commandGateway.send(cancelProductReservationCommand);
     }
 
     @SagaEventHandler(associationProperty = "orderId")
@@ -145,5 +150,11 @@ public class OrderSaga {
                 productReservationCancelledEvent.getOrderId(), productReservationCancelledEvent.getReason());
 
         commandGateway.send(rejectOrderCommand);
+    }
+
+    @EndSaga
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(OrderRejectedEvent orderRejectedEvent) {
+        LOGGER.info("Successfully rejected order with id " + orderRejectedEvent.getOrderId());
     }
 }

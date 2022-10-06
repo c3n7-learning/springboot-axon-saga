@@ -7,6 +7,7 @@ import tech.c3n7.OrdersService.core.data.OrderEntity;
 import tech.c3n7.OrdersService.core.data.OrdersRepository;
 import tech.c3n7.OrdersService.core.events.OrderApprovedEvent;
 import tech.c3n7.OrdersService.core.events.OrderCreatedEvent;
+import tech.c3n7.OrdersService.core.events.OrderRejectedEvent;
 
 @Component
 public class OrderEventsHandler {
@@ -34,6 +35,14 @@ public class OrderEventsHandler {
         }
 
         orderEntity.setOrderStatus(orderApprovedEvent.getOrderStatus());
+        ordersRepository.save(orderEntity);
+    }
+
+    @EventHandler
+    public void on(OrderRejectedEvent orderRejectedEvent) {
+        OrderEntity orderEntity = ordersRepository.findByOrderId(orderRejectedEvent.getOrderId());
+
+        orderEntity.setOrderStatus(orderRejectedEvent.getOrderStatus());
         ordersRepository.save(orderEntity);
     }
 }
