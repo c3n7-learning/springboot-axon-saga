@@ -8,6 +8,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
 import tech.c3n7.OrdersService.command.commands.ApproveOrderCommand;
 import tech.c3n7.OrdersService.command.commands.CreateOrderCommand;
+import tech.c3n7.OrdersService.core.events.OrderApprovedEvent;
 import tech.c3n7.OrdersService.core.events.OrderCreatedEvent;
 import tech.c3n7.OrdersService.core.model.OrderStatus;
 
@@ -43,5 +44,13 @@ public class OrderAggregate {
     @CommandHandler
     public void handle(ApproveOrderCommand approveOrderCommand) {
         // Create and publish the OrderApproveEvent
+        OrderApprovedEvent orderApprovedEvent = new OrderApprovedEvent(approveOrderCommand.getOrderId());
+
+        AggregateLifecycle.apply(approveOrderCommand);
+    }
+
+    @EventSourcingHandler
+    public void on(OrderApprovedEvent orderApprovedEvent) {
+        this.orderStatus = orderApprovedEvent.getOrderStatus();
     }
 }
