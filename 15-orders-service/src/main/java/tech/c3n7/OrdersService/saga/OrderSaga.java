@@ -98,7 +98,7 @@ public class OrderSaga {
         }
 
         scheduleId = deadlineManager.schedule(
-                Duration.of(10, ChronoUnit.SECONDS),
+                Duration.of(120, ChronoUnit.SECONDS),
                 PAYMENT_PROCESSING_TIMEOUT_DEADLINE, productReservedEvent);
 
         // Trigger the deadline schedule
