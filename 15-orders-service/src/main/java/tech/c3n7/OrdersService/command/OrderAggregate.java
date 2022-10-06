@@ -6,6 +6,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
+import tech.c3n7.OrdersService.command.commands.ApproveOrderCommand;
 import tech.c3n7.OrdersService.command.commands.CreateOrderCommand;
 import tech.c3n7.OrdersService.core.events.OrderCreatedEvent;
 import tech.c3n7.OrdersService.core.model.OrderStatus;
@@ -37,5 +38,10 @@ public class OrderAggregate {
         this.quantity = orderCreatedEvent.getQuantity();
         this.addressId = orderCreatedEvent.getAddressId();
         this.orderStatus = orderCreatedEvent.getOrderStatus();
+    }
+
+    @CommandHandler
+    public void handle(ApproveOrderCommand approveOrderCommand) {
+        // Create and publish the OrderApproveEvent
     }
 }

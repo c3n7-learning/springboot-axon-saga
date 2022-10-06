@@ -12,6 +12,7 @@ import org.axonframework.spring.stereotype.Saga;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import tech.c3n7.OrdersService.command.commands.ApproveOrderCommand;
 import tech.c3n7.OrdersService.core.events.OrderCreatedEvent;
 import tech.c3n7.estore.core.commands.ProcessPaymentCommand;
 import tech.c3n7.estore.core.commands.ReserveProductCommand;
@@ -102,5 +103,8 @@ public class OrderSaga {
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(PaymentProcessedEvent paymentProcessedEvent) {
         // Send an ApprovedOrder Command
+        ApproveOrderCommand approveOrderCommand = new ApproveOrderCommand(paymentProcessedEvent.getOrderId());
+
+        commandGateway.send(approveOrderCommand);
     }
 }
