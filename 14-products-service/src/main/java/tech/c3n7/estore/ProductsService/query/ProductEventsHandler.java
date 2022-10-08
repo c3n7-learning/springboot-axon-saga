@@ -2,6 +2,7 @@ package tech.c3n7.estore.ProductsService.query;
 
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,5 +79,10 @@ public class ProductEventsHandler {
         productsRepository.save(productEntity);
 
         LOGGER.info("ProductReservationCancelledEvent: New product quantity " + productEntity.getQuantity());
+    }
+
+    @ResetHandler
+    public void reset() {
+        productsRepository.deleteAll();
     }
 }
