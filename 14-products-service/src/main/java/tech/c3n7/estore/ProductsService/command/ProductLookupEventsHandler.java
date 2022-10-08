@@ -23,4 +23,9 @@ public class ProductLookupEventsHandler {
 
         productLookupRepositry.save(productLookupEntity);
     }
+
+
+    public void reset() {
+
+    }
 }
