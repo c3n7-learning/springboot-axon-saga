@@ -16,7 +16,7 @@ import tech.c3n7.estore.core.commands.events.ProductReservedEvent;
 
 import java.math.BigDecimal;
 
-@Aggregate
+@Aggregate(snapshotTriggerDefinition = "productSnapshotTriggerDefinition")
 public class ProductAggregate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductAggregate.class);

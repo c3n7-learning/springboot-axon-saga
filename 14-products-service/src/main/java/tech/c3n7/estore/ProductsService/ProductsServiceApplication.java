@@ -4,6 +4,9 @@ import com.thoughtworks.xstream.XStream;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.PropagatingErrorHandler;
+import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
+import org.axonframework.eventsourcing.SnapshotTriggerDefinition;
+import org.axonframework.eventsourcing.Snapshotter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,4 +40,11 @@ public class ProductsServiceApplication {
 //		config.registerListenerInvocationErrorHandler("product-group",
 //				conf -> PropagatingErrorHandler.instance());
     }
+
+    @Bean(name="s")
+    public SnapshotTriggerDefinition snapshotTriggerDefinition(Snapshotter snapshotter) {
+        // Snapshot every 3 events
+        return new EventCountSnapshotTriggerDefinition(snapshotter, 3);
+    }
 }
+
